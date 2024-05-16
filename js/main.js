@@ -6,15 +6,37 @@ let difficultyOptions = document.querySelector('#difficultyOptions')
 let questionsNumber = document.querySelector('#questionsNumber')
 let startQuiz = document.querySelector('#startQuiz')
 
-startQuiz.addEventListener('click' , ()=>{
+startQuiz.addEventListener('click' , async ()=>{
     let category = categoryMenu.value
     let difficulty = difficultyOptions.value
     let number = questionsNumber.value
-    console.log(category);
-    console.log(difficulty);
-    console.log(number);
+    
+
+    let myQuiz = new Quiz(category , difficulty , number)
+    let questions = await myQuiz.getAllQuestions()
+    console.log(questions);
+
 })
 
+class Quiz{
+    constructor(category , difficulty , number){
+        this.category = category
+        this.difficulty = difficulty
+        this.number = number
+    }
+
+    getApi(){
+        return `https://opentdb.com/api.php?amount=${this.number}&category=${this.category}&difficulty=${this.difficulty}`
+    }
+
+    async getAllQuestions(){
+        let response = await fetch(this.getApi())
+        let data = await response.json()
+        return data
+    }
+
+
+}
 
 // let quizOptions = document.querySelector("#quizOptions");
 // let categoryMenu = document.querySelector("#categoryMenu");
