@@ -6,6 +6,8 @@ let difficultyOptions = document.querySelector('#difficultyOptions')
 let questionsNumber = document.querySelector('#questionsNumber')
 let startQuiz = document.querySelector('#startQuiz')
 let questions;
+let myQuiz
+let myRow = document.querySelector('.questions .container .row')
 
 startQuiz.addEventListener('click' , async ()=>{
     let category = categoryMenu.value
@@ -13,10 +15,11 @@ startQuiz.addEventListener('click' , async ()=>{
     let number = questionsNumber.value
     
 
-    let myQuiz = new Quiz(category , difficulty , number)
+    myQuiz = new Quiz(category , difficulty , number)
     questions = await myQuiz.getAllQuestions()
     quizOptions.classList.replace('d-flex' , 'd-none')
     let myQuestion = new Question(0)
+    myQuestion.display()
     console.log(myQuestion);
     console.log(questions);
 
@@ -28,6 +31,7 @@ class Quiz{
         this.category = category
         this.difficulty = difficulty
         this.number = number
+        this.score = 0
     }
 
     getApi(){
@@ -56,8 +60,29 @@ class Question{
 
     getAllAnswer(){
         let allAnswers = [...this.incorrect_answers , this.correct_answer]
+        allAnswers.sort()
         return allAnswers
     }
+
+    display(){
+        const questionMarkUp = `
+            <div
+            class="question shadow-lg col-lg-6 offset-lg-3  p-4 rounded-3 d-flex flex-column justify-content-center align-items-center gap-3 animate__animated animate__bounceIn"
+            >
+            <div class="w-100 d-flex justify-content-between">
+                <span class="btn btn-category">${this.category}</span>
+                <span class="fs-6 btn btn-questions"> ${this.index + 1} of ${questions.length} Questions</span>
+            </div>
+            <h2 class="text-capitalize h4 text-center">${this.question}</h2>  
+            <ul class="choices w-100 list-unstyled m-0 d-flex flex-wrap text-center">
+                ${ this.allAnswers.map( (answer)=> `<li>${answer}</li>` ).toString().replaceAll(",","") }
+            </ul>
+            <h2 class="text-capitalize text-center score-color h3 fw-bold"><i class="bi bi-emoji-laughing"></i> Score: ${myQuiz.score}</h2>        
+            </div>
+        `;
+        myRow.innerHTML = questionMarkUp
+    }
+
 }
 
 // let quizOptions = document.querySelector("#quizOptions");
