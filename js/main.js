@@ -5,6 +5,7 @@ let categoryMenu = document.querySelector('#categoryMenu')
 let difficultyOptions = document.querySelector('#difficultyOptions')
 let questionsNumber = document.querySelector('#questionsNumber')
 let startQuiz = document.querySelector('#startQuiz')
+let questions;
 
 startQuiz.addEventListener('click' , async ()=>{
     let category = categoryMenu.value
@@ -13,9 +14,11 @@ startQuiz.addEventListener('click' , async ()=>{
     
 
     let myQuiz = new Quiz(category , difficulty , number)
-    let questions = await myQuiz.getAllQuestions()
-    console.log(questions);
+    questions = await myQuiz.getAllQuestions()
     quizOptions.classList.replace('d-flex' , 'd-none')
+    let myQuestion = new Question(0)
+    console.log(myQuestion);
+    console.log(questions);
 
 
 })
@@ -38,6 +41,23 @@ class Quiz{
     }
 
 
+}
+class Question{
+    constructor(index){
+        this.index = index
+        this.question = questions[index].question
+        this.correct_answer = questions[index].correct_answer
+        this.difficulty = questions[index].difficulty
+        this.incorrect_answers = questions[index].incorrect_answers
+        this.category = questions[index].category
+        this.allAnswers = this.getAllAnswer()
+
+    }
+
+    getAllAnswer(){
+        let allAnswers = [...this.incorrect_answers , this.correct_answer]
+        return allAnswers
+    }
 }
 
 // let quizOptions = document.querySelector("#quizOptions");
