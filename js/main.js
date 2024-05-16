@@ -15,6 +15,8 @@ startQuiz.addEventListener('click' , async ()=>{
     let myQuiz = new Quiz(category , difficulty , number)
     let questions = await myQuiz.getAllQuestions()
     console.log(questions);
+    quizOptions.classList.replace('d-flex' , 'd-none')
+
 
 })
 
@@ -32,7 +34,7 @@ class Quiz{
     async getAllQuestions(){
         let response = await fetch(this.getApi())
         let data = await response.json()
-        return data
+        return data.results
     }
 
 
