@@ -1,0 +1,14 @@
+    return `
+      <div
+        class="question shadow-lg col-lg-12  p-4 rounded-3 d-flex flex-column justify-content-center align-items-center gap-3"
+      >
+        <h2 class="mb-0">
+        ${
+          this.score == this.numbers
+            ? `Congratulations 🎉`
+            : `Your score is ${this.score}`
+        }      
+        </h2>
+        <button class="again btn btn-primary rounded-pill"><i class="bi bi-arrow-repeat"></i> Try Again</button>
+      </div>
+    `;
